@@ -9,8 +9,8 @@ export interface NoteRepository {
     take,
   }: {
     idUser: NotePrimitive['idUser'];
-    skip: number;
-    take: number;
+    skip?: number;
+    take?: number;
   }) => Promise<Note[]>;
   findOne: ({
     idUser,
@@ -19,6 +19,7 @@ export interface NoteRepository {
     idUser: NotePrimitive['idUser'];
     index: number;
   }) => Promise<Note | null>;
-  findByID: (id: NotePrimitive['id']) => Promise<Note | null>;
-  delete: (id: Note) => Promise<Note>;
+  findByID: ({id}:{id: NotePrimitive['id']}) => Promise<Note | null>;
+  update: (data: Note) => Promise<Note>;
+  delete: (data: Note) => Promise<Note>;
 }

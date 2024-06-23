@@ -32,9 +32,16 @@ export class ReadNoteService {
     idUser: Note['idUser']
     index: number
   }): Promise<Note | null> {
-    return await this.noteRepository.findOne({idUser,
-      index
+    const note = await this.noteRepository.findAll({idUser,
+      skip: index,
+      take: 1
     })
+
+    if (note.length === 0) {
+      return null
+    }
+
+    return note[0]
   }
 
   /* ---------- findByID ---------- */ // MARK: findByID

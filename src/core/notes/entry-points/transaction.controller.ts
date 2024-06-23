@@ -18,7 +18,7 @@ import { ENDPOINT_INFO } from '@/decorators/endpoint.decorator';
 import { NoteResponse } from './transaction.response';
 import { Note } from '../domain/note.entity';
 import { CreateNoteDTO, SWGCreateNoteDTO } from '../domain/dto/create-note';
-import { UpdateNoteDTO } from '../domain/dto/update-note';
+import { SWGUpdateNoteDTO, UpdateNoteDTO } from '../domain/dto/update-note';
 
 @ApiTags('Note')
 @Controller('notes')
@@ -38,7 +38,7 @@ export class NoteController {
   @Get()
   async findAll(): Promise<Note[]> {
     return await this.readNoteService.findAll({
-      idUser: "",
+      idUser: "1",
     });
   }
 
@@ -53,7 +53,7 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<Note> {
     const note = await this.readNoteService.findOne({
-      idUser: "",
+      idUser: "1",
       index,
     });
 
@@ -81,9 +81,10 @@ export class NoteController {
 
   }
 
-  /* ---------- delete ---------- */ // MARK: delete
+  /* ---------- update ---------- */ // MARK: update
   @ENDPOINT_INFO({
     auth: true,
+    body: SWGUpdateNoteDTO,
     response: NoteResponse,
     status: 204,
   })
@@ -93,7 +94,7 @@ export class NoteController {
     @Body() data: UpdateNoteDTO,
   ): Promise<Note> {
     return await this.writeNoteService.update({
-      idUser: "",
+      idUser: "1",
       index,
     }, data);
   }
@@ -108,7 +109,7 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<void> {
     await this.writeNoteService.delete({
-      idUser: "",
+      idUser: "1",
       index,
     });
   }

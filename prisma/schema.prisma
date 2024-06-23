@@ -30,10 +30,10 @@ model Note {
   id        String   @id @default(cuid())
   idUser    String   @map("id_user")
   idImage   String?  @map("id_image")
-  title     String
+  title     String?
   content   String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  images    Image?   @relation(fields: [idImage], references: [id])
   user      User     @relation(fields: [idUser], references: [id])
+  images    Image?   @relation(fields: [idImage], references: [id])
 }

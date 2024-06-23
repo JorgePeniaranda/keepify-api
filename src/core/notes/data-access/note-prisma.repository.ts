@@ -64,7 +64,11 @@ export class NoteRepositoryPrisma implements NoteRepository {
       where: {
         id: data.id,
       },
-      data,
+      data: {
+        idImage: data.idImage,
+        title: data.title,
+        content: data.content,
+      },
     });
 
     return new Note(note);

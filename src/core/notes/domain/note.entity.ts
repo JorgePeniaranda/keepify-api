@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
 import { type NotePrimitive } from './note.primitive';
+import { User } from '@/core/user/domain/user.entity';
 
 export class Note implements NotePrimitive {
   readonly #id: NotePrimitive['id'];
@@ -21,9 +22,10 @@ export class Note implements NotePrimitive {
   }
 
   /* -------------------- RELATIONS -------------------- */ // MARK: RELATIONS
-  // readonly images: Image;
 
-  // readonly user: User;
+  readonly user?: User;
+  
+  // readonly images: Image;
 
   /* -------------------- GETTER / SETTER -------------------- */ // MARK: GETTER / SETTER
   @Expose()

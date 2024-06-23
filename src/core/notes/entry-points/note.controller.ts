@@ -13,9 +13,9 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ReadNoteService } from '../domain/service/read-note.service';
-import { WriteNoteService } from '../domain/service/write-transaction.service';
+import { WriteNoteService } from '../domain/service/write-note.service';
 import { ENDPOINT_INFO } from '@/decorators/endpoint.decorator';
-import { NoteResponse } from './transaction.response';
+import { NoteResponse } from './note.response';
 import { Note } from '../domain/note.entity';
 import { CreateNoteDTO, SWGCreateNoteDTO } from '../domain/dto/create-note';
 import { SWGUpdateNoteDTO, UpdateNoteDTO } from '../domain/dto/update-note';

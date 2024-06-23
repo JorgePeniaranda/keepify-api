@@ -21,5 +21,5 @@ export interface NoteRepository {
   }) => Promise<Note | null>;
   findByID: ({id}:{id: NotePrimitive['id']}) => Promise<Note | null>;
   update: (data: Note) => Promise<Note>;
-  delete: (data: Note) => Promise<Note>;
+  delete: (data: Note) => Promise<void>;
 }

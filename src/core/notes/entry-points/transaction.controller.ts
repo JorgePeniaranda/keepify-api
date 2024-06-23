@@ -38,7 +38,7 @@ export class NoteController {
   @Get()
   async findAll(): Promise<Note[]> {
     return await this.readNoteService.findAll({
-      idUser: "1",
+      idUser: '1',
     });
   }
 
@@ -53,14 +53,12 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<Note> {
     const note = await this.readNoteService.findOne({
-      idUser: "1",
+      idUser: '1',
       index,
     });
 
     if (note === null) {
-      throw new NotFoundException(
-        Messages.error.NotFound(EntitiesName.NOTE),
-      );
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.NOTE));
     }
 
     return note;
@@ -74,11 +72,8 @@ export class NoteController {
     status: 201,
   })
   @Post()
-  async create(
-    @Body() data: CreateNoteDTO,
-  ): Promise<Note> {
+  async create(@Body() data: CreateNoteDTO): Promise<Note> {
     return await this.writeNoteService.create(data);
-
   }
 
   /* ---------- update ---------- */ // MARK: update
@@ -93,10 +88,13 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
     @Body() data: UpdateNoteDTO,
   ): Promise<Note> {
-    return await this.writeNoteService.update({
-      idUser: "1",
-      index,
-    }, data);
+    return await this.writeNoteService.update(
+      {
+        idUser: '1',
+        index,
+      },
+      data,
+    );
   }
 
   /* ---------- delete ---------- */ // MARK: delete
@@ -109,7 +107,7 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<void> {
     await this.writeNoteService.delete({
-      idUser: "1",
+      idUser: '1',
       index,
     });
   }

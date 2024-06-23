@@ -1,51 +1,55 @@
-import { Inject, Injectable } from '@nestjs/common'
-import { type Note } from '../note.entity'
-import { type NotePrimitive } from '../note.primitive'
-import { NoteRepository } from '../note.repository'
+import { Inject, Injectable } from '@nestjs/common';
+import { type Note } from '../note.entity';
+import { type NotePrimitive } from '../note.primitive';
+import { NoteRepository } from '../note.repository';
 
 @Injectable()
 export class ReadNoteService {
-  constructor (
+  constructor(
     @Inject('NoteRepository')
     private readonly noteRepository: NoteRepository,
   ) {}
 
   /* ---------- findAll ---------- */ // MARK: findAll
-  public async findAll ({
+  public async findAll({
     idUser,
     skip,
-    take
+    take,
   }: {
-    idUser: NotePrimitive['idUser']
-    skip?: number
-    take?: number
+    idUser: NotePrimitive['idUser'];
+    skip?: number;
+    take?: number;
   }): Promise<Note[]> {
-    return await this.noteRepository.findAll({idUser,skip,
-      take})
+    return await this.noteRepository.findAll({ idUser, skip, take });
   }
 
   /* ---------- findOne ---------- */ // MARK: findOne
-  public async findOne ({
+  public async findOne({
     idUser,
-    index
+    index,
   }: {
-    idUser: Note['idUser']
-    index: number
+    idUser: Note['idUser'];
+    index: number;
   }): Promise<Note | null> {
-    const note = await this.noteRepository.findAll({idUser,
+    const note = await this.noteRepository.findAll({
+      idUser,
       skip: index,
-      take: 1
-    })
+      take: 1,
+    });
 
     if (note.length === 0) {
-      return null
+      return null;
     }
 
-    return note[0]
+    return note[0];
   }
 
   /* ---------- findByID ---------- */ // MARK: findByID
-  public async findByID ({ id }: { id: NotePrimitive['id'] }): Promise<Note | null> {
-    return await this.noteRepository.findByID({id})
+  public async findByID({
+    id,
+  }: {
+    id: NotePrimitive['id'];
+  }): Promise<Note | null> {
+    return await this.noteRepository.findByID({ id });
   }
 }

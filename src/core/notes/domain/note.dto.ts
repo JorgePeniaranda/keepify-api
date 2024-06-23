@@ -5,28 +5,28 @@ import {
   IsPositive,
   IsString,
   MaxDate,
-  MaxLength
+  MaxLength,
 } from 'class-validator';
 import { type NotePrimitive } from './note.primitive';
 
 export class NoteDTO implements NotePrimitive {
   /* ---------- ID ---------- */
   @ApiProperty({
-    example: "c39eb602-b1cd-4e3e-9b12-48cc05577715",
+    example: 'c39eb602-b1cd-4e3e-9b12-48cc05577715',
     type: String,
   })
   @IsString()
   id: NotePrimitive['id'];
   /* ---------- ID USER ---------- */
   @ApiProperty({
-    example: "c39eb602-b1cd-4e3e-9b12-48cc05577715",
+    example: 'c39eb602-b1cd-4e3e-9b12-48cc05577715',
     type: String,
   })
   @IsString()
   idUser: NotePrimitive['idUser'];
   /* ---------- ID IMAGE ---------- */
   @ApiProperty({
-    example: "c39eb602-b1cd-4e3e-9b12-48cc05577715",
+    example: 'c39eb602-b1cd-4e3e-9b12-48cc05577715',
     type: String,
   })
   @IsString()
@@ -35,7 +35,7 @@ export class NoteDTO implements NotePrimitive {
   /* ---------- TITLE ---------- */
   @ApiProperty({
     example: 'Lorem ipsum:',
-    type: String
+    type: String,
   })
   @IsString()
   @MaxLength(2000)
@@ -44,7 +44,7 @@ export class NoteDTO implements NotePrimitive {
   /* ---------- CONTENT ---------- */
   @ApiProperty({
     example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    type: String
+    type: String,
   })
   @IsString()
   @MaxLength(2000)

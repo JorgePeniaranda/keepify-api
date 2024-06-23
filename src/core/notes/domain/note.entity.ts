@@ -41,9 +41,9 @@ export class Note implements NotePrimitive {
     return this.#idImage;
   }
 
-  public set idImage (value: NotePrimitive['idImage']) {
-    this.#idImage = value
-    this.#updateUpdatedAt()
+  public set idImage(value: NotePrimitive['idImage']) {
+    this.#idImage = value;
+    this.#updateUpdatedAt();
   }
 
   @Expose()
@@ -51,9 +51,9 @@ export class Note implements NotePrimitive {
     return this.#title;
   }
 
-  public set title (value: NotePrimitive['title']) {
-    this.#title = value
-    this.#updateUpdatedAt()
+  public set title(value: NotePrimitive['title']) {
+    this.#title = value;
+    this.#updateUpdatedAt();
   }
 
   @Expose()
@@ -61,9 +61,9 @@ export class Note implements NotePrimitive {
     return this.#content;
   }
 
-  public set content (value: NotePrimitive['content']) {
-    this.#content = value
-    this.#updateUpdatedAt()
+  public set content(value: NotePrimitive['content']) {
+    this.#content = value;
+    this.#updateUpdatedAt();
   }
 
   @Expose()
@@ -77,8 +77,8 @@ export class Note implements NotePrimitive {
   }
 
   /* -------------------- METHODS -------------------- */ // MARK: METHODS
-  #updateUpdatedAt (): void {
-    this.#updatedAt = new Date()
+  #updateUpdatedAt(): void {
+    this.#updatedAt = new Date();
   }
 
   public static create({

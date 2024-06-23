@@ -5,7 +5,7 @@ import { PrismaService } from '@/service/prisma.service';
 
 @Injectable()
 export class NoteRepositoryPrisma implements NoteRepository {
-  constructor (private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   /* ---------- create ---------- */ // MARK: create
   public async create(data: Note): Promise<Note> {
@@ -72,17 +72,10 @@ export class NoteRepositoryPrisma implements NoteRepository {
 
   /* ---------- delete ---------- */ // MARK: delete
   public async delete(data: Note): Promise<void> {
-    await this.prisma.note.update({
-      where: data.toJSON(),
-      data: {
-        idImage: null,
-        title: null,
-        content: null,
-      },
-    })
-
     await this.prisma.note.delete({
-      where: data.toJSON(),
+      where: {
+        id: data.id,
+      },
     });
   }
 }

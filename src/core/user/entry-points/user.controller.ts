@@ -1,4 +1,5 @@
 import { EntitiesName } from '@/constants/entities';
+import { ENDPOINT_INFO } from '@/decorators/endpoint.decorator';
 import { Messages } from '@/messages';
 import {
   Body,
@@ -6,19 +7,16 @@ import {
   Delete,
   Get,
   NotFoundException,
-  Param,
-  ParseIntPipe,
   Patch,
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ReadUserService } from '../domain/service/read-user.service';
-import { WriteUserService } from '../domain/service/write-user.service';
-import { ENDPOINT_INFO } from '@/decorators/endpoint.decorator';
-import { UserResponse } from './user.response';
-import { User } from '../domain/user.entity';
 import { CreateUserDTO, SWGCreateUserDTO } from '../domain/dto/create-user';
 import { SWGUpdateUserDTO, UpdateUserDTO } from '../domain/dto/update-user';
+import { ReadUserService } from '../domain/service/read-user.service';
+import { WriteUserService } from '../domain/service/write-user.service';
+import { User } from '../domain/user.entity';
+import { UserResponse } from './user.response';
 
 @ApiTags('User')
 @Controller('user')
@@ -28,7 +26,6 @@ export class UserController {
     private readonly writeNoteService: WriteUserService,
   ) {}
 
-
   /* ---------- getInfo ---------- */ // MARK: getInfo
   @ENDPOINT_INFO({
     auth: true,
@@ -36,8 +33,7 @@ export class UserController {
     status: 200,
   })
   @Get()
-  async getInfo(
-  ): Promise<User> {
+  async getInfo(): Promise<User> {
     const note = await this.readNoteService.findByID({
       id: '1',
     });
@@ -51,7 +47,7 @@ export class UserController {
 
   /* ---------- create ---------- */ // MARK: create
   @ENDPOINT_INFO({
-    auth: true,
+    auth: false,
     body: SWGCreateUserDTO,
     response: UserResponse,
     status: 201,
@@ -69,9 +65,7 @@ export class UserController {
     status: 204,
   })
   @Patch()
-  async update(
-    @Body() data: UpdateUserDTO,
-  ): Promise<User> {
+  async update(@Body() data: UpdateUserDTO): Promise<User> {
     return await this.writeNoteService.update(
       {
         id: '1',
@@ -86,8 +80,7 @@ export class UserController {
     status: 204,
   })
   @Delete()
-  async delete(
-  ): Promise<void> {
+  async delete(): Promise<void> {
     await this.writeNoteService.delete({
       id: '1',
     });

@@ -18,4 +18,13 @@ export class ReadUserService {
   }): Promise<User | null> {
     return await this.userRepository.findByID({ id });
   }
+
+  /* ---------- findByEmail ---------- */ // MARK: findByEmail
+  public async findByEmail({
+    email,
+  }: {
+    email: UserPrimitive['email'];
+  }): Promise<User | null> {
+    return await this.userRepository.findByEmail({ email });
+  }
 }

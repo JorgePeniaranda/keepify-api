@@ -4,6 +4,7 @@ import { type UserPrimitive } from './user.primitive';
 export interface UserRepository {
   create: (data: User) => Promise<User>;
   findByID: ({ id }: { id: UserPrimitive['id'] }) => Promise<User | null>;
+  findByEmail: ({ email }: { email: UserPrimitive['email'] }) => Promise<User | null>;
   update: (data: User) => Promise<User>;
   delete: (data: User) => Promise<void>;
 }

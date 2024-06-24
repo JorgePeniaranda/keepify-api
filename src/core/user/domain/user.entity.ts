@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import { type UserPrimitive } from './user.primitive';
 import { Note } from '@/core/notes/domain/note.entity';
+import { hashSync, compareSync } from 'bcryptjs';
 
 export class User implements UserPrimitive {
   readonly #id: UserPrimitive['id'];
@@ -43,7 +44,7 @@ export class User implements UserPrimitive {
   }
 
   public set secret(value: UserPrimitive['secret']) {
-    this.#secret = value;
+    this.#secret = hashSync(value);
     this.#updateUpdatedAt();
   }
 
@@ -60,6 +61,10 @@ export class User implements UserPrimitive {
   /* -------------------- METHODS -------------------- */ // MARK: METHODS
   #updateUpdatedAt(): void {
     this.#updatedAt = new Date();
+  }
+
+  public comparePassword(value: string): boolean {
+    return compareSync(value, this.#secret);
   }
 
   public static create({

@@ -1,12 +1,12 @@
+import { EntitiesName } from '@/constants/entities';
+import { PayloadPrimitive } from '@/core/auth/domain/primitive/payload.primitive';
+import { Messages } from '@/messages';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { Note } from '../note.entity';
-import { NotePrimitive } from '../note.primitive';
-import { NoteRepository } from '../note.repository';
-import { ReadNoteService } from './read-note.service';
 import { CreateNoteDTO } from '../dto/create-note';
 import { UpdateNoteDTO } from '../dto/update-note';
-import { Messages } from '@/messages';
-import { EntitiesName } from '@/constants/entities';
+import { Note } from '../note.entity';
+import { NoteRepository } from '../note.repository';
+import { ReadNoteService } from './read-note.service';
 
 @Injectable()
 export class WriteNoteService {
@@ -17,14 +17,12 @@ export class WriteNoteService {
   ) {}
 
   /* ---------- create ---------- */ // MARK: create
-  public async create({
-    idUser,
-    idImage,
-    title,
-    content,
-  }: CreateNoteDTO): Promise<Note> {
+  public async create(
+    sessionData: PayloadPrimitive,
+    { idImage, title, content }: CreateNoteDTO,
+  ): Promise<Note> {
     const note = Note.create({
-      idUser,
+      idUser: sessionData.id,
       idImage,
       title,
       content,
@@ -35,17 +33,12 @@ export class WriteNoteService {
 
   /* ---------- update ---------- */ // MARK: update
   public async update(
-    {
-      idUser,
-      index,
-    }: {
-      idUser: NotePrimitive['idUser'];
-      index: number;
-    },
+    sessionData: PayloadPrimitive,
+    index: number,
     { idImage, title, content }: UpdateNoteDTO,
   ): Promise<Note> {
     const note = await this.readNoteService.findOne({
-      idUser,
+      idUser: sessionData.id,
       index,
     });
 
@@ -61,15 +54,12 @@ export class WriteNoteService {
   }
 
   /* ---------- delete ---------- */ // MARK: delete
-  public async delete({
-    idUser,
-    index,
-  }: {
-    idUser: NotePrimitive['idUser'];
-    index: number;
-  }): Promise<void> {
+  public async delete(
+    sessionData: PayloadPrimitive,
+    index: number,
+  ): Promise<void> {
     const note = await this.readNoteService.findOne({
-      idUser,
+      idUser: sessionData.id,
       index,
     });
 

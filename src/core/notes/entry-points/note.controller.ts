@@ -79,7 +79,7 @@ export class NoteController {
     @CurrentUser() User: JwtPayload,
     @Body() data: CreateNoteDTO,
   ): Promise<Note> {
-    return await this.writeNoteService.create({ ...data, idUser: User.id });
+    return await this.writeNoteService.create(User, data);
   }
 
   /* ---------- update ---------- */ // MARK: update
@@ -95,13 +95,7 @@ export class NoteController {
     @Param('index', new ParseIntPipe()) index: number,
     @Body() data: UpdateNoteDTO,
   ): Promise<Note> {
-    return await this.writeNoteService.update(
-      {
-        idUser: User.id,
-        index,
-      },
-      data,
-    );
+    return await this.writeNoteService.update(User, index, data);
   }
 
   /* ---------- delete ---------- */ // MARK: delete
@@ -114,9 +108,6 @@ export class NoteController {
     @CurrentUser() User: JwtPayload,
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<void> {
-    await this.writeNoteService.delete({
-      idUser: User.id,
-      index,
-    });
+    await this.writeNoteService.delete(User, index);
   }
 }

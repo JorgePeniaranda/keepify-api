@@ -1,12 +1,12 @@
+import { EntitiesName } from '@/constants/entities';
+import { PayloadPrimitive } from '@/core/auth/domain/primitive/payload.primitive';
+import { Messages } from '@/messages';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { CreateUserDTO } from '../dto/create-user';
+import { UpdateUserDTO } from '../dto/update-user';
 import { User } from '../user.entity';
 import { UserRepository } from '../user.repository';
 import { ReadUserService } from './read-user.service';
-import { CreateUserDTO } from '../dto/create-user';
-import { UpdateUserDTO } from '../dto/update-user';
-import { Messages } from '@/messages';
-import { EntitiesName } from '@/constants/entities';
-import { UserPrimitive } from '../user.primitive';
 
 @Injectable()
 export class WriteUserService {
@@ -38,15 +38,11 @@ export class WriteUserService {
 
   /* ---------- update ---------- */ // MARK: update
   public async update(
-    {
-      id,
-    }: {
-      id: UserPrimitive['id'];
-    },
+    sessionData: PayloadPrimitive,
     { secret }: UpdateUserDTO,
   ): Promise<User> {
     const user = await this.readUserService.findByID({
-      id,
+      id: sessionData.id,
     });
 
     if (!user) {
@@ -59,9 +55,9 @@ export class WriteUserService {
   }
 
   /* ---------- delete ---------- */ // MARK: delete
-  public async delete({ id }: { id: UserPrimitive['id'] }): Promise<void> {
+  public async delete(sessionData: PayloadPrimitive): Promise<void> {
     const user = await this.readUserService.findByID({
-      id,
+      id: sessionData.id,
     });
 
     if (!user) {

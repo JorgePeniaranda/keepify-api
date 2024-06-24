@@ -36,9 +36,7 @@ export class UserController {
   })
   @Get()
   async getInfo(@CurrentUser() User: JwtPayload): Promise<User> {
-    const note = await this.readNoteService.findByID({
-      id: User.id,
-    });
+    const note = await this.readNoteService.findByID(User);
 
     if (note === null) {
       throw new NotFoundException(Messages.error.NotFound(EntitiesName.USER));
@@ -71,12 +69,7 @@ export class UserController {
     @CurrentUser() User: JwtPayload,
     @Body() data: UpdateUserDTO,
   ): Promise<User> {
-    return await this.writeNoteService.update(
-      {
-        id: User.id,
-      },
-      data,
-    );
+    return await this.writeNoteService.update(User, data);
   }
 
   /* ---------- delete ---------- */ // MARK: delete
@@ -86,8 +79,6 @@ export class UserController {
   })
   @Delete()
   async delete(@CurrentUser() User: JwtPayload): Promise<void> {
-    await this.writeNoteService.delete({
-      id: User.id,
-    });
+    await this.writeNoteService.delete(User);
   }
 }

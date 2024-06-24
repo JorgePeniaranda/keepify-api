@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDate,
-  IsNumber,
-  IsPositive,
+  IsOptional,
   IsString,
   MaxDate,
   MaxLength,
@@ -30,6 +29,7 @@ export class NoteDTO implements NotePrimitive {
     type: String,
   })
   @IsString()
+  @IsOptional()
   idImage: NotePrimitive['idImage'];
 
   /* ---------- TITLE ---------- */
@@ -39,6 +39,7 @@ export class NoteDTO implements NotePrimitive {
   })
   @IsString()
   @MaxLength(2000)
+  @IsOptional()
   title: NotePrimitive['title'];
 
   /* ---------- CONTENT ---------- */
@@ -48,6 +49,7 @@ export class NoteDTO implements NotePrimitive {
   })
   @IsString()
   @MaxLength(2000)
+  @IsOptional()
   content: NotePrimitive['content'];
 
   /* ---------- CREATED AT ---------- */

@@ -11,11 +11,8 @@ export class NoteRepositoryPrisma implements NoteRepository {
   public async create(data: Note): Promise<Note> {
     const note = await this.prisma.note.create({
       data: {
+        ...data.toJSON(),
         id: undefined,
-        idUser: data.idUser,
-        idImage: data.idImage,
-        title: data.title,
-        content: data.content,
       },
     });
 
@@ -64,11 +61,7 @@ export class NoteRepositoryPrisma implements NoteRepository {
       where: {
         id: data.id,
       },
-      data: {
-        idImage: data.idImage,
-        title: data.title,
-        content: data.content,
-      },
+      data: data.toJSON(),
     });
 
     return new Note(note);

@@ -21,6 +21,12 @@ export class WriteNoteService {
     sessionData: PayloadPrimitive,
     { idImage, title, content }: CreateNoteDTO,
   ): Promise<Note> {
+    const image = null;
+
+    if (idImage !== null && image === null) {
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.IMAGE));
+    }
+
     const note = Note.create({
       idUser: sessionData.id,
       idImage,
@@ -46,7 +52,17 @@ export class WriteNoteService {
       throw new NotFoundException(Messages.error.NotFound(EntitiesName.NOTE));
     }
 
-    if (idImage !== undefined) note.idImage = idImage;
+    if (idImage !== undefined) {
+      const image = null;
+
+      if (image === null) {
+        throw new NotFoundException(
+          Messages.error.NotFound(EntitiesName.IMAGE),
+        );
+      }
+
+      note.idImage = idImage;
+    }
     if (title !== undefined) note.title = title;
     if (content !== undefined) note.content = content;
 

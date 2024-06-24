@@ -5,9 +5,9 @@ import { User } from '@/core/user/domain/user.entity';
 export class Note implements NotePrimitive {
   readonly #id: NotePrimitive['id'];
   readonly #idUser: NotePrimitive['idUser'];
-  #idImage: NotePrimitive['idImage'];
-  #title: NotePrimitive['title'];
-  #content: NotePrimitive['content'];
+  #idImage?: NotePrimitive['idImage'];
+  #title?: NotePrimitive['title'];
+  #content?: NotePrimitive['content'];
   readonly #createdAt: NotePrimitive['createdAt'];
   #updatedAt: NotePrimitive['updatedAt'];
 
@@ -90,9 +90,9 @@ export class Note implements NotePrimitive {
     content,
   }: {
     idUser: NotePrimitive['idUser'];
-    idImage: NotePrimitive['idImage'];
-    title: NotePrimitive['title'];
-    content: NotePrimitive['content'];
+    idImage?: NotePrimitive['idImage'];
+    title?: NotePrimitive['title'];
+    content?: NotePrimitive['content'];
   }): Note {
     return new Note({
       id: crypto.randomUUID(),

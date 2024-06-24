@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { type UserPrimitive } from './user.primitive';
 import { Note } from '@/core/notes/domain/note.entity';
 import { hashSync, compareSync } from 'bcryptjs';
@@ -10,12 +10,12 @@ export class User implements UserPrimitive {
   readonly #createdAt: UserPrimitive['createdAt'];
   #updatedAt: UserPrimitive['updatedAt'];
 
-  constructor(note: UserPrimitive) {
-    this.#id = note.id;
-    this.#email = note.email;
-    this.#secret = note.secret;
-    this.#createdAt = note.createdAt;
-    this.#updatedAt = note.updatedAt;
+  constructor(user: UserPrimitive) {
+    this.#id = user.id;
+    this.#email = user.email;
+    this.#secret = user.secret;
+    this.#createdAt = user.createdAt;
+    this.#updatedAt = user.updatedAt;
   }
 
   /* -------------------- RELATIONS -------------------- */ // MARK: RELATIONS
@@ -38,13 +38,13 @@ export class User implements UserPrimitive {
     this.#updateUpdatedAt();
   }
 
-  @Expose()
+  @Exclude()
   public get secret(): UserPrimitive['secret'] {
     return this.#secret;
   }
 
   public set secret(value: UserPrimitive['secret']) {
-    this.#secret = hashSync(value);
+    this.#secret = User.#hashPassword(value);
     this.#updateUpdatedAt();
   }
 
@@ -63,6 +63,10 @@ export class User implements UserPrimitive {
     this.#updatedAt = new Date();
   }
 
+  static #hashPassword(value: string): string {
+    return hashSync(value, 12);
+  }
+
   public comparePassword(value: string): boolean {
     return compareSync(value, this.#secret);
   }
@@ -75,9 +79,9 @@ export class User implements UserPrimitive {
     secret: UserPrimitive['secret'];
   }): User {
     return new User({
-      id: '',
+      id: crypto.randomUUID(),
       email,
-      secret,
+      secret: this.#hashPassword(secret),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

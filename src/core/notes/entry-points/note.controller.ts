@@ -19,6 +19,8 @@ import { NoteResponse } from './note.response';
 import { Note } from '../domain/note.entity';
 import { CreateNoteDTO, SWGCreateNoteDTO } from '../domain/dto/create-note';
 import { SWGUpdateNoteDTO, UpdateNoteDTO } from '../domain/dto/update-note';
+import { JwtPayload } from '@/core/auth/domain/payload.entity';
+import { CurrentUser } from '@/decorators/current-user.decorator';
 
 @ApiTags('Note')
 @Controller('notes')
@@ -50,10 +52,11 @@ export class NoteController {
   })
   @Get('/:index')
   async findOne(
+    @CurrentUser() User: JwtPayload,
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<Note> {
     const note = await this.readNoteService.findOne({
-      idUser: '1',
+      idUser: User.id,
       index,
     });
 
@@ -72,8 +75,11 @@ export class NoteController {
     status: 201,
   })
   @Post()
-  async create(@Body() data: CreateNoteDTO): Promise<Note> {
-    return await this.writeNoteService.create(data);
+  async create(
+    @CurrentUser() User: JwtPayload,
+    @Body() data: CreateNoteDTO,
+  ): Promise<Note> {
+    return await this.writeNoteService.create({ ...data, idUser: User.id });
   }
 
   /* ---------- update ---------- */ // MARK: update
@@ -85,12 +91,13 @@ export class NoteController {
   })
   @Patch('/:index')
   async update(
+    @CurrentUser() User: JwtPayload,
     @Param('index', new ParseIntPipe()) index: number,
     @Body() data: UpdateNoteDTO,
   ): Promise<Note> {
     return await this.writeNoteService.update(
       {
-        idUser: '1',
+        idUser: User.id,
         index,
       },
       data,
@@ -104,10 +111,11 @@ export class NoteController {
   })
   @Delete('/:index')
   async delete(
+    @CurrentUser() User: JwtPayload,
     @Param('index', new ParseIntPipe()) index: number,
   ): Promise<void> {
     await this.writeNoteService.delete({
-      idUser: '1',
+      idUser: User.id,
       index,
     });
   }

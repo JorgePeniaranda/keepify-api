@@ -17,6 +17,8 @@ import { ReadUserService } from '../domain/service/read-user.service';
 import { WriteUserService } from '../domain/service/write-user.service';
 import { User } from '../domain/user.entity';
 import { UserResponse } from './user.response';
+import { CurrentUser } from '@/decorators/current-user.decorator';
+import { JwtPayload } from '@/core/auth/domain/payload.entity';
 
 @ApiTags('User')
 @Controller('user')
@@ -33,9 +35,9 @@ export class UserController {
     status: 200,
   })
   @Get()
-  async getInfo(): Promise<User> {
+  async getInfo(@CurrentUser() User: JwtPayload): Promise<User> {
     const note = await this.readNoteService.findByID({
-      id: '1',
+      id: User.id,
     });
 
     if (note === null) {
@@ -62,13 +64,16 @@ export class UserController {
     auth: true,
     body: SWGUpdateUserDTO,
     response: UserResponse,
-    status: 204,
+    status: 200,
   })
   @Patch()
-  async update(@Body() data: UpdateUserDTO): Promise<User> {
+  async update(
+    @CurrentUser() User: JwtPayload,
+    @Body() data: UpdateUserDTO,
+  ): Promise<User> {
     return await this.writeNoteService.update(
       {
-        id: '1',
+        id: User.id,
       },
       data,
     );
@@ -80,9 +85,9 @@ export class UserController {
     status: 204,
   })
   @Delete()
-  async delete(): Promise<void> {
+  async delete(@CurrentUser() User: JwtPayload): Promise<void> {
     await this.writeNoteService.delete({
-      id: '1',
+      id: User.id,
     });
   }
 }

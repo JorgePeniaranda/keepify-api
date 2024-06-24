@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Note } from '../note.entity';
 import { NotePrimitive } from '../note.primitive';
 import { NoteRepository } from '../note.repository';
@@ -50,7 +50,7 @@ export class WriteNoteService {
     });
 
     if (!note) {
-      throw new Error(Messages.error.NotFound(EntitiesName.NOTE));
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.NOTE));
     }
 
     if (idImage !== undefined) note.idImage = idImage;
@@ -74,7 +74,7 @@ export class WriteNoteService {
     });
 
     if (!note) {
-      throw new Error(Messages.error.NotFound(EntitiesName.NOTE));
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.NOTE));
     }
 
     await this.noteRepository.delete(note);

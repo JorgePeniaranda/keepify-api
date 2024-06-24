@@ -1,3 +1,3 @@
 export interface TokenPrimitive {
-  readonly token: string
+  readonly token: string;
 }

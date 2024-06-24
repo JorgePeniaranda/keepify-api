@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '../user.entity';
 import { UserRepository } from '../user.repository';
 import { ReadUserService } from './read-user.service';
@@ -17,13 +17,20 @@ export class WriteUserService {
   ) {}
 
   /* ---------- create ---------- */ // MARK: create
-  public async create({
-    email,
-    secret
-    }: CreateUserDTO): Promise<User> {
+  public async create({ email, secret }: CreateUserDTO): Promise<User> {
+    const userExists = await this.readUserService.findByEmail({
+      email,
+    });
+
+    if (userExists) {
+      throw new NotFoundException(
+        Messages.error.AlreadyExist(EntitiesName.USER),
+      );
+    }
+
     const user = User.create({
       email,
-      secret
+      secret,
     });
 
     return await this.userRepository.create(user);
@@ -43,7 +50,7 @@ export class WriteUserService {
     });
 
     if (!user) {
-      throw new Error(Messages.error.NotFound(EntitiesName.USER));
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.USER));
     }
 
     if (secret !== undefined) user.secret = secret;
@@ -52,18 +59,13 @@ export class WriteUserService {
   }
 
   /* ---------- delete ---------- */ // MARK: delete
-  public async delete(
-    {
-      id,
-    }: {
-      id: UserPrimitive['id'];
-    }): Promise<void> {
+  public async delete({ id }: { id: UserPrimitive['id'] }): Promise<void> {
     const user = await this.readUserService.findByID({
-      id
+      id,
     });
 
     if (!user) {
-      throw new Error(Messages.error.NotFound(EntitiesName.USER));
+      throw new NotFoundException(Messages.error.NotFound(EntitiesName.USER));
     }
 
     await this.userRepository.delete(user);

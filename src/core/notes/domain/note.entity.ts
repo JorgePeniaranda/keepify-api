@@ -24,7 +24,7 @@ export class Note implements NotePrimitive {
   /* -------------------- RELATIONS -------------------- */ // MARK: RELATIONS
 
   readonly user?: User;
-  
+
   // readonly images: Image;
 
   /* -------------------- GETTER / SETTER -------------------- */ // MARK: GETTER / SETTER
@@ -95,7 +95,7 @@ export class Note implements NotePrimitive {
     content: NotePrimitive['content'];
   }): Note {
     return new Note({
-      id: '',
+      id: crypto.randomUUID(),
       idUser,
       idImage,
       title,

@@ -1,4 +1,5 @@
 export const ErrorMessages = {
+  AlreadyExist: (name: string) => `${name} already exist`,
   DatabaseConnectionError: 'Database connection error',
   EnvironmentVariableError: (variable: string): string =>
     `Environment variable "${variable}" not found`,
